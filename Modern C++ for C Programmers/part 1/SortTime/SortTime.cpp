@@ -4,7 +4,7 @@
 #include <random>		
 #include <limits>
 
-#if __cplusplus >= 201703L
+#ifdef _WIN32
     #include <execution>
 #endif
 
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 		qsort(&vec[0], vec.size(), sizeof(int), cmp);
 	}
     else if (*argv[2] == 'p')	{
-#if __cplusplus >= 201703L
+#ifdef _WIN32
 		std::sort(std::execution::par, vec.begin(), vec.end());
 #else
         std::cout << "parallel sort not supported!" << std::endl;
