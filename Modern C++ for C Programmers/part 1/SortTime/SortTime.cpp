@@ -3,7 +3,11 @@
 #include <vector>
 #include <random>		
 #include <limits>
-#include <execution>
+
+#if __cplusplus >= 201703L
+    #include <execution>
+#endif
+
 #include <algorithm>	// std::sort
 #include <chrono>
 
@@ -51,10 +55,15 @@ int main(int argc, char** argv)
 	if (*argv[2] == 'q') {
 		qsort(&vec[0], vec.size(), sizeof(int), cmp);
 	}
-	else if (*argv[2] == 'p')	{
+    else if (*argv[2] == 'p')	{
+#if __cplusplus >= 201703L
 		std::sort(std::execution::par, vec.begin(), vec.end());
+#else
+        std::cout << "parallel sort not supported!" << std::endl;
+        return -1;
+#endif
 	}
-	else if (*argv[2] = 's') {
+	else if (*argv[2] == 's') {
 		std::sort(vec.begin(), vec.end());
 	}	
 
@@ -62,7 +71,7 @@ int main(int argc, char** argv)
 
 	duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
-	std::cout << time_span.count() << " seconds";
+    std::cout << time_span.count() << " seconds" << std::endl;
 
 	return 0;
 }
